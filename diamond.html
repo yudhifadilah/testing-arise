@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Arise Store - Daftar Harga Diamonds</title>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: system-ui, Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #1a001f; color: #fff;
+      display: flex; flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main { flex: 1; padding-top: 70px; }
+
+    /* ===== Navbar ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 60px;
+      background: rgba(30,0,40,0.85);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    nav .logo { font-weight:700; font-size:18px; color:#ffae42; }
+    nav ul { list-style:none; display:flex; gap:16px; margin:0; padding:0; }
+    nav ul li a {
+      color:#fff; text-decoration:none; font-size:14px; transition:.3s;
+    }
+    nav ul li a:hover { color:#ffae42; }
+    .menu-toggle { display:none; cursor:pointer; font-size:24px; color:#fff; }
+    @media(max-width:768px){
+      nav ul {
+        position:absolute; top:60px; right:0;
+        flex-direction: column;
+        background:rgba(30,0,40,0.95);
+        width:200px; padding:20px;
+        display:none;
+      }
+      nav ul.show { display:flex; }
+      .menu-toggle { display:block; }
+    }
+
+    /* ===== Slider ===== */
+    .slider { position: relative; width: 100%; height: auto; overflow: hidden; }
+    .slides { display: flex; width: 300%; transition: transform 1s ease; }
+    .slides img { width: 100%; height:auto; object-fit: cover; }
+    .slider-dots {
+      position: absolute; bottom: 12px; left: 50%;
+      transform: translateX(-50%); display: flex; gap: 6px;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: rgba(255,255,255,0.5); cursor: pointer;
+    }
+    .dot.active { background: #fff; }
+
+    /* ===== Cards ===== */
+    .lists {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 16px; padding: 24px;
+    }
+    .card {
+      position: relative;
+      background: rgba(255,255,255,0.08);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
+    .card h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+    .price { font-weight:700; color:#ffae42; margin-top:6px; }
+    .muted { color:#bbb; font-size:13px; }
+    .order-btn {
+      position:absolute; bottom:12px; right:12px;
+      padding:8px 14px;
+      background: linear-gradient(135deg,#9b59b6,#8e44ad);
+      color:#fff; font-size:13px; font-weight:600;
+      border-radius:6px; text-decoration:none;
+      opacity:0; transform: translateY(10px);
+      transition:.3s;
+    }
+    .card:hover .order-btn { opacity:1; transform:translateY(0); }
+
+    /* Responsif grid card */
+    @media (max-width: 768px) {
+      .lists {
+        grid-template-columns: repeat(2, 1fr); /* jadi 2 kolom */
+      }
+    }
+    @media (max-width: 480px) {
+      .lists {
+        grid-template-columns: 1fr; /* jadi 1 kolom di layar kecil banget */
+      }
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align:center; padding:16px;
+      background:rgba(255,255,255,0.05);
+      color:#ccc; font-size:14px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    footer a { color:#ffae42; text-decoration:none; margin:0 6px; }
+    footer a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Arise Store</div>
+    <div class="menu-toggle" onclick="document.querySelector('nav ul').classList.toggle('show')">☰</div>
+    <ul>
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="produk.html">Produk</a></li>
+      <li><a href="kontak.html">Kontak</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Slider Banner -->
+    <div class="slider">
+      <div class="slides" id="slides">
+        <img src="https://via.placeholder.com/1200x300/9b59b6/ffffff?text=Promo+Diamond+1" alt="Banner 1">
+        <img src="https://via.placeholder.com/1200x300/8e44ad/ffffff?text=Promo+Diamond+2" alt="Banner 2">
+        <img src="https://via.placeholder.com/1200x300/6c3483/ffffff?text=Promo+Diamond+3" alt="Banner 3">
+      </div>
+      <div class="slider-dots" id="sliderDots"></div>
+    </div>
+
+    <div style="padding:20px; text-align:center;">
+      <h1>Mobile Legends Indo</h1>
+      <p class="muted">Sewaktu waktu harga dapat berubah - ubah</p>
+    </div>
+
+    <!-- List Cards -->
+    <div id="produk" class="lists"></div>
+  </main>
+
+  <footer>
+    &copy; 2025 Arise Store | <a href="kontak.html">Kontak</a> | <a href="#">Social Media</a>
+  </footer>
+
+  <script>
+    const data = [
+      {d:220, p:57000}, {d:366, p:91000}, {d:568, p:139000}, {d:257, p:55000}, {d:966, p:228000},
+      {d:2010, p:464900}, {d:3, p:998}, {d:4, p:1400}, {d:5, p:1200}, {d:6, p:1700},
+      {d:15, p:4399}, {d:11, p:3200}, {d:12, p:3320}, {d:14, p:4000}, {d:17, p:4720},
+      {d:19, p:5211}, {d:20, p:5897}, {d:21, p:6048}, {d:30, p:8492}, {d:33, p:9179},
+      {d:36, p:9500}, {d:44, p:10900}, {d:50, p:13000}, {d:56, p:14590}, {d:59, p:14590},
+      {d:60, p:14690}, {d:66, p:17599}, {d:74, p:19300}, {d:83, p:22089}, {d:169, p:42090},
+      {d:170, p:42000}, {d:184, p:43700}, {d:239, p:57700}, {d:275, p:67790}, {d:41, p:11300},
+      {d:276, p:67700}, {d:42, p:11300}, {d:282, p:70000}, {d:45, p:11100}, {d:67, p:17699},
+      {d:70, p:18695}, {d:75, p:19399}, {d:81, p:21589}, {d:86, p:22090}, {d:122, p:32000},
+      {d:140, p:34090}, {d:167, p:43599}, {d:172, p:43000}, {d:202, p:51000}, {d:244, p:59790},
+      {d:284, p:70000}, {d:296, p:72000}, {d:333, p:81000}, {d:344, p:84000}, {d:345, p:84000},
+      {d:355, p:85000}, {d:403, p:99500}, {d:404, p:99500}, {d:408, p:99500}, {d:429, p:106000},
+      {d:514, p:126000}, {d:570, p:137000}, {d:600, p:144000}, {d:606, p:144000}, {d:685, p:165000},
+      {d:702, p:170000}, {d:706, p:169490}, {d:708, p:170000}, {d:716, p:170000}, {d:758, p:180000},
+      {d:829, p:198000}, {d:875, p:210000}, {d:878, p:210000}, {d:962, p:230000}, {d:1050, p:250000},
+      {d:1159, p:281000}, {d:1220, p:298000}, {d:1412, p:318000}, {d:1446, p:347000}, {d:1830, p:446000},
+      {d:2046, p:482900}, {d:2157, p:488000}, {d:2195, p:517000}, {d:2976, p:700000}, {d:3409, p:813290},
+      {d:4026, p:939900}, {d:4830, p:1149000}
+    ];
+    const rupiah = new Intl.NumberFormat('id-ID');
+    const cardList = document.getElementById('produk');
+    const noWa = "6283890481993";
+
+    data.forEach((item, idx) => {
+      const pesanText = encodeURIComponent(`Halo, saya ingin pesan ${item.d} Diamonds seharga Rp ${rupiah.format(item.p)}`);
+      const waLink = `https://wa.me/${noWa}?text=${pesanText}`;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${item.d} Diamonds</h3>
+        <div class="muted">No: ${idx+1}</div>
+        <div class="price">Rp ${rupiah.format(item.p)}</div>
+        <a href="${waLink}" target="_self" class="order-btn">Pesan Sekarang</a>
+      `;
+      cardList.appendChild(card);
+    });
+
+    // ===== Slider =====
+    const slides = document.getElementById('slides');
+    const sliderDots = document.getElementById('sliderDots');
+    const totalSlides = slides.children.length;
+    let index = 0;
+    for(let i=0;i<totalSlides;i++){
+      const dot=document.createElement('div');
+      dot.className='dot'+(i===0?' active':'');
+      dot.addEventListener('click',()=>goToSlide(i));
+      sliderDots.appendChild(dot);
+    }
+    function goToSlide(i){
+      index=i;
+      slides.style.transform=`translateX(-${i*100}%)`;
+      updateDots();
+    }
+    function updateDots(){
+      [...sliderDots.children].forEach((dot,i)=>dot.classList.toggle('active',i===index));
+    }
+    setInterval(()=>{ index=(index+1)%totalSlides; goToSlide(index); },4000);
+  </script>
+</body>
+</html>
